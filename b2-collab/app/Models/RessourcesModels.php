@@ -16,6 +16,5 @@ class RessourcesModels extends Model
         'name_ressource',
         'creation_date',
     ];
-
     public $timestamps = true;
 }

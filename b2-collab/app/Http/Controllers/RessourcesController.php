@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RessourcesModels; // ou ton modèle exact
+use App\Models\RessourcesModels;
 use Illuminate\Http\Request;
 
 class RessourcesController extends Controller
@@ -10,6 +10,6 @@ class RessourcesController extends Controller
     public function index()
     {
         $ressources = RessourcesModels::all();
-        return view('ressource', compact('ressources'));
+        return view('ressource.index', compact('ressources'));
     }
 }

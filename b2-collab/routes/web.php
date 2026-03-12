@@ -2,15 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RessourcesController;
-
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('index');
 });
 
 
-Route::get('/ressources', [RessourcesController::class, 'index'])
-    ->name('resources.index');
+Route::get('ressources', [RessourcesController::class, 'index'])
+    ->name('ressources.index');
 
 Route::get('/mentions-legales', function () {
     return view('legal.mentions');
