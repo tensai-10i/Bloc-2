@@ -5,9 +5,8 @@ use App\Http\Controllers\RessourcesController;
 
 
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
-
 
 Route::get('/ressources', [RessourcesController::class, 'index'])->name('resources.index');
 Route::get('/mentions-legales', function () {
@@ -21,3 +20,5 @@ Route::get('/cgu', function () {
 Route::get('/contact', function () {
     return view('legal.contact');
 })->name('contact');
+
+Route::resource('category', CategoryController::class);
