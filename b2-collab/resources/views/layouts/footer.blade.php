@@ -1,5 +1,5 @@
 <footer class="footer">
-    <a href="#">Mentions légales</a>
-    <a href="#">Contact</a>
-    <a href="#">CGU</a>
+    <a href="{{ route('mentions-legales') }}">Mentions légales</a>
+    <a href="{{ route('contact') }}">Contact</a>
+    <a href="{{ route('cgu') }}">CGU</a>
 </footer>
