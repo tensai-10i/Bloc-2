@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RessourcesController;
-use App\Http\Controllers\CategoryController;
+
 
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
 
 // Route Ressource
