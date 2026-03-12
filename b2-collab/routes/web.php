@@ -9,7 +9,9 @@ Route::get('/', function () {
 });
 
 
-Route::get('/ressources', [RessourcesController::class, 'index'])->name('resources.index');
+Route::get('/ressources', [RessourcesController::class, 'index'])
+    ->name('resources.index');
+
 Route::get('/mentions-legales', function () {
     return view('legal.mentions');
 })->name('mentions-legales');
@@ -21,3 +23,7 @@ Route::get('/cgu', function () {
 Route::get('/contact', function () {
     return view('legal.contact');
 })->name('contact');
+
+Route::get('/support', function () {
+    return view('support');
+})->name('support');
