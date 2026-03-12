@@ -6,22 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('resources', function (Blueprint $table) {
-            $table->id('id_ressource');
-            $table->string('name_ressource');
-            $table->date('creation_date');
-            $table->timestamps();
+            $table->id('id_ressource');          // Clé primaire
+            $table->string('name_ressource');    // Nom de la ressource
+            $table->dateTime('derniere_connexion')->nullable(); // Dernière connexion
+            $table->timestamps();                // created_at et updated_at automatiques
+            $table->softDeletes();               // deleted_at pour suppression soft
+            $table->unsignedBigInteger('id_typeressource'); // FK type
+            $table->unsignedBigInteger('id_cat');          // FK category
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('resources');
