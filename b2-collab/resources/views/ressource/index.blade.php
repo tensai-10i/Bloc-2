@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ressources</title>
-    <link rel="stylesheet" href="{{ asset('css/ressource.css') }}">
-</head>
-<body>
-
 <div class="page-wrapper">
 
     <div class="page-header">
@@ -22,7 +12,6 @@
     <div class="toolbar">
         <div class="search-box">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
             <input type="text" id="searchInput" placeholder="Rechercher…">
         </div>
@@ -49,9 +38,6 @@
                     <tbody>
                     @foreach($ressources as $ressource)
                         <tr>
-                            <td><span class="id-badge">#{{ $ressource->id_ressource }}</span></td>
-                            <td><span class="ressource-name">{{ $ressource->name_ressource }}</span></td>
-                            <td class="date-cell">{{ \Carbon\Carbon::parse($ressource->creation_date)->format('d/m/Y') }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -66,10 +52,7 @@
     document.getElementById('searchInput').addEventListener('input', function () {
         const q = this.value.toLowerCase();
         document.querySelectorAll('tbody tr').forEach(row => {
-            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
         });
     });
 </script>
 
-</body>
-</html>

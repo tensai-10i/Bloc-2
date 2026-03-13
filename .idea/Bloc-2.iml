@@ -121,6 +121,8 @@
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/tijsverkoyen/css-to-inline-styles" />
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/b2-collab/storage/app" />
+      <excludeFolder url="file://$MODULE_DIR$/b2-collab/storage/framework" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

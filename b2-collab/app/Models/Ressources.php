@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RessourcesModels extends Model
+class Ressources extends Model
 {
     use HasFactory;
 
@@ -14,8 +14,6 @@ class RessourcesModels extends Model
 
     protected $fillable = [
         'name_ressource',
-        'creation_date',
     ];
-
     public $timestamps = true;
 }
