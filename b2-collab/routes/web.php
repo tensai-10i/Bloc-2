@@ -2,11 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RessourcesController;
-
-
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\CategoryController;
 
 // Route Ressource
 Route::resource('ressources', RessourcesController::class);
