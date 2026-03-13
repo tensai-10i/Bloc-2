@@ -24,12 +24,15 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $userRole = \App\Models\Role::where('name', 'user')->first();
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role_id' => $userRole ? $userRole->id : null,
         ];
     }
 

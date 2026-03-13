@@ -15,9 +15,9 @@
                         <p class="text-yellow-800 mb-6">Veuillez vérifier votre adresse e-mail pour déverrouiller toutes les fonctionnalités.</p>
                         <form method="POST" action="{{ route('verification.send') }}">
                             @csrf
-                            <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded">
-                                Envoyer l'e-mail de vérification
-                            </button>
+                            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">
+    Envoyer l'e-mail de vérification
+</button>
                         </form>
                     </div>
                 </div>

@@ -18,6 +18,25 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Admin routes
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+
+    // User management routes
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users/{user}/edit-role', [UserController::class, 'editRole'])->name('admin.users.edit-role');
+    Route::patch('/admin/users/{user}/update-role', [UserController::class, 'updateRole'])->name('admin.users.update-role');
+});
+
+// Moderator routes
+Route::middleware(['auth', 'role:moderator'])->group(function () {
+    Route::get('/moderator', function () {
+        return 'Espace Modérateur';
+    })->name('moderator.dashboard');
+});
+
 // User Profile Routes
 Route::get('/profile/{user}', [UserController::class, 'show'])->name('profile.show');
 
