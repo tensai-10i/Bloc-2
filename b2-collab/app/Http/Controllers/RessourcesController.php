@@ -10,35 +10,43 @@ class RessourcesController extends Controller
     public function index()
     {
         $ressources = Ressources::all();
+
         return view('ressource.index', compact('ressources'));
     }
 
     public function create()
     {
-        return view('ressource.create');
+        return view('ressources.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name_ressource' => 'required',
-        ],[
-            'name_ressource.required' => 'Le nom de la ressource est obligatoire.'
+        ], [
+            'name_ressource.required' => 'Le nom de la ressource est obligatoire.',
         ]);
 
         Ressources::create([
             'name_ressource' => $request->name_ressource,
         ]);
 
-        return redirect()->route('ressource.index');
+        return redirect()->route('ressources.index');
     }
+
+    public function show($id)
+    {
+        $ressource = Ressources::findOrFail($id);
+
+        return view('ressources.show', compact('ressource'));
+    }
+
     public function edit($id)
     {
         $ressource = Ressources::findOrFail($id);
 
-        return view('ressource.edit', compact('ressource'));
+        return view('ressources.edit', compact('ressource'));
     }
-
 
     public function update(Request $request, $id)
     {
@@ -49,14 +57,13 @@ class RessourcesController extends Controller
         $ressource = Ressources::findOrFail($id);
 
         $ressource->update([
-            'name_ressource' => $request->name_ressource
+            'name_ressource' => $request->name_ressource,
         ]);
 
         return redirect()
             ->route('ressources.index')
             ->with('success', 'Ressource modifiée avec succès');
     }
-
 
     public function destroy($id)
     {
@@ -65,8 +72,7 @@ class RessourcesController extends Controller
         $ressource->delete();
 
         return redirect()
-            ->route('ressource.index')
+            ->route('ressources.index')
             ->with('success', 'Ressource supprimée avec succès');
     }
-
 }
