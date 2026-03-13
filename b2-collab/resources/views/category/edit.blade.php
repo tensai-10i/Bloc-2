@@ -39,7 +39,7 @@
                 <input type="text"
                        id="name_cat"
                        name="name_cat"
-                       value="{{ old('name_cat') }}"
+                       value="{{ old('name_cat', $category->name_cat) }}"
                        required>
 
                 @error('name_cat')

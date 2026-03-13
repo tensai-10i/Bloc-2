@@ -53,7 +53,7 @@ class RessourcesController extends Controller
         ]);
 
         return redirect()
-            ->route('ressource.index')
+            ->route('ressources.index')
             ->with('success', 'Ressource modifiée avec succès');
     }
 
