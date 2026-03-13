@@ -4,10 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RessourcesController;
 use App\Http\Controllers\CategoryController;
 
-Route::get('/', function () {
-    return view('index');
-});
-
 // Route Ressource
 Route::resource('ressources', RessourcesController::class);
 
