@@ -8,9 +8,15 @@ Route::get('/', function () {
     return view('index');
 });
 
+// Route Ressource
+Route::resource('ressources', RessourcesController::class);
 
-Route::get('ressources', [RessourcesController::class, 'index'])
-    ->name('ressources.index');
+
+// Route Catégories
+Route::resource('category', CategoryController::class);
+
+
+// Route Pages légales
 
 Route::get('/mentions-legales', function () {
     return view('legal.mentions');
@@ -28,4 +34,4 @@ Route::get('/support', function () {
     return view('support');
 })->name('support');
 
-Route::resource('category', CategoryController::class);
+
