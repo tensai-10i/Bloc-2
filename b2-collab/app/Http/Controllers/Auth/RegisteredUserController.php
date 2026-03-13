@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -36,13 +37,16 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::min(12)->mixedCase()->numbers()->symbols()->uncompromised()],
         ]);
 
-        $userRole = \App\Models\Role::where('name', 'user')->first();
+        $userRole = Role::firstOrCreate(
+            ['name' => 'user'],
+            ['level' => 1]
+        );
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $userRole ? $userRole->id : null,
+            'role_id' => $userRole->id,
         ]);
 
         event(new Registered($user));
