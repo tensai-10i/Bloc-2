@@ -9,16 +9,14 @@ use App\Http\Controllers\CategoryController;
 Route::get('/', function () {
     return view('index');
 });
+
 // Route Ressource
 Route::resource('ressources', RessourcesController::class);
-
 
 // Route Catégories
 Route::resource('category', CategoryController::class);
 
-
 // Route Pages légales
-
 Route::get('/mentions-legales', function () {
     return view('legal.mentions');
 })->name('mentions-legales');
@@ -34,10 +32,6 @@ Route::get('/contact', function () {
 Route::get('/support', function () {
     return view('support');
 })->name('support');
-
-
-    return redirect()->route('login');
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
