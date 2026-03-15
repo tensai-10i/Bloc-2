@@ -1054,3 +1054,6 @@ tbody tr:last-child {
         width: 100%;
     }
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
