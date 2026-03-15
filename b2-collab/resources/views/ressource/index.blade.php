@@ -30,7 +30,7 @@
                 + Nouvelle ressource
             </a>
 
-            <a href="{{ route('category.create') }}" class="btn btn-secondary">
+            <a href="{{ route('category.index') }}" class="btn btn-secondary">
                 + Nouvelle catégorie
             </a>
         </div>
