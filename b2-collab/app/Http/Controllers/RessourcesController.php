@@ -16,7 +16,7 @@ class RessourcesController extends Controller
 
     public function create()
     {
-        return view('ressources.create');
+        return view('ressource.create');
     }
 
     public function store(Request $request)
