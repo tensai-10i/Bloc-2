@@ -26,7 +26,7 @@
         </div>
 
         <div class="toolbar-actions">
-            <a href="{{ route('ressources.create') }}" class="btn btn-primary">
+            <a href="{{ route('ressource.create') }}" class="btn btn-primary">
                 + Nouvelle ressource
             </a>
 
