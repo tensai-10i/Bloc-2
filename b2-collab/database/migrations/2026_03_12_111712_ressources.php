@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('id_ressource');          // Clé primaire
             $table->string('name_ressource');    // Nom de la ressource
             $table->text('description')->nullable(); //Description de la ressource
-            $table->dateTime('derniere_connexion')->nullable(); // Dernière connexion
+            $table->unsignedInteger('nb_visites')->default(0);            $table->dateTime('derniere_connexion')->nullable(); // Dernière connexion
             $table->timestamps();                // created_at et updated_at automatiques
             $table->softDeletes();               // deleted_at pour suppression soft
             $table->unsignedBigInteger('id_typeressource'); // FK type
