@@ -5,18 +5,18 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RessourcesController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\UserRoleController;
 
+// Public pages
 Route::get('/', function () {
-    return view('index');
-});
+    return redirect()->route('ressources.index');
+})->name('home');
 
-// Route Ressource
-Route::resource('ressources', RessourcesController::class);
+// Resources and categories
+Route::resource('ressources', RessourcesController::class)->except(['show']);
+Route::resource('category', CategoryController::class)->except(['show']);
 
-// Route Catégories
-Route::resource('category', CategoryController::class);
-
-// Route Pages légales
+// Legal and support pages
 Route::get('/mentions-legales', function () {
     return view('legal.mentions');
 })->name('mentions-legales');
@@ -37,13 +37,24 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::view('/gestion', 'admin.dashboard')->name('admin.dashboard');
+    Route::get('/gestion/utilisateurs', [UserRoleController::class, 'index'])->name('admin.users.index');
+    Route::patch('/gestion/utilisateurs/{user}/role', [UserRoleController::class, 'update'])->name('admin.users.update-role');
+});
+
+Route::middleware(['auth', 'role:moderator'])->group(function () {
+    Route::view('/moderation', 'moderator.dashboard')->name('moderator.dashboard');
+});
+
+// Authenticated profile management (current user)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// User Profile Routes
+// Public user profile page
 Route::get('/profile/{user}', [UserController::class, 'show'])->name('profile.show');
 
 require __DIR__.'/auth.php';

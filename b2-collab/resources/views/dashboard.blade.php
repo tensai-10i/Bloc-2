@@ -11,6 +11,31 @@
                 <div class="p-6 text-gray-900">
                     <div class="mb-6">
                         <p class="text-lg font-semibold mb-4">Vous êtes connecté!</p>
+
+                        <p class="text-sm text-gray-600 mb-4">
+                            Role actuel: <strong>{{ auth()->user()->roleDisplay() }}</strong>
+                        </p>
+
+                        <div class="mb-4 flex gap-3 flex-wrap">
+                            <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-4 py-2 bg-sky-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-sky-700 transition">
+                                Mon profil
+                            </a>
+
+                            @if(auth()->user()->isAdmin())
+                                <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-4 py-2 bg-gray-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-800 transition">
+                                    Page de gestion
+                                </a>
+                                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition">
+                                    Gerer les roles
+                                </a>
+                            @endif
+
+                            @if(auth()->user()->canAccessModeration())
+                                <a href="{{ route('moderator.dashboard') }}" class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 transition">
+                                    Page de moderation
+                                </a>
+                            @endif
+                        </div>
                         
                         @if (auth()->user() && !auth()->user()->email_verified_at)
                             <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4">

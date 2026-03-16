@@ -11,10 +11,26 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="flex space-x-8 sm:-my-px sm:ms-10">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         Tableau de bord
                     </x-nav-link>
+                    <x-nav-link :href="route('ressources.index')" :active="request()->routeIs('ressources.index')">
+                        Ressources
+                    </x-nav-link>
+                    <x-nav-link :href="route('support')" :active="request()->routeIs('support')">
+                        Support
+                    </x-nav-link>
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                        Contact
+                    </x-nav-link>
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="bg-blue-600 text-white">
+                        Mon espace
+                    </x-nav-link>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="ml-2 px-3 py-2 rounded-md bg-green-600 text-white font-semibold hover:bg-green-700 transition">Déconnexion</button>
+                    </form>
                 </div>
             </div>
 
