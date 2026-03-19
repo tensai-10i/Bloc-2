@@ -15,4 +15,12 @@ class Category extends Model
     protected $fillable = [
         'name_cat'
     ];
+
+    /**
+     * Get the resources in this category.
+     */
+    public function ressources()
+    {
+        return $this->hasMany(Ressources::class, 'id_cat', 'id_cat');
+    }
 }

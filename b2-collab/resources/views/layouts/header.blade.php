@@ -5,7 +5,15 @@
             <a href="{{ route('ressources.index') }}">Ressources</a>
             <a href="{{ route('support') }}">Support</a>
             <a href="{{ route('contact') }}">Contact</a>
-            <a href="#">Connexion / inscription</a>
+            @auth
+                <a href="{{ route('dashboard') }}">Mon espace</a>
+                <form method="POST" action="{{ route('logout') }}" style="display:inline;margin:0;">
+                    @csrf
+                    <button type="submit" class="navbar-logout-btn">Déconnexion</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}">Connexion / inscription</a>
+            @endauth
         </nav>
     </div>
 </header>

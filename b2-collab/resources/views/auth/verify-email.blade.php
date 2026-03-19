@@ -1,30 +1,29 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        Merci de votre inscription ! Avant de commencer, pourriez-vous vérifier votre adresse e-mail en cliquant sur le lien que nous vous avons envoyé par e-mail ? Si vous n'avez pas reçu l'e-mail, nous vous en renverrons un avec plaisir.
-    </div>
+    <h1 class="auth-title">Verifier votre email</h1>
+    <p class="auth-subtitle">Consultez votre boite mail puis cliquez sur le lien de verification.</p>
 
     @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            Un nouveau lien de vérification a été envoyé à l'adresse e-mail que vous avez fournie lors de votre inscription.
+        <div class="alert alert-success">
+            Un nouveau lien de verification a ete envoye a votre adresse email.
         </div>
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
+    <div class="auth-links">
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
 
             <div>
-                <x-primary-button>
-                    Renvoyer l'e-mail de vérification
-                </x-primary-button>
+                <button type="submit" class="btn btn-primary">
+                    Renvoyer l'email
+                </button>
             </div>
         </form>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
 
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Déconnexion
+            <button type="submit" class="auth-link">
+                Deconnexion
             </button>
         </form>
     </div>

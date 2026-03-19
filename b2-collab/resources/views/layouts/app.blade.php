@@ -11,8 +11,20 @@
 
     @include('layouts.header')
 
+    @isset($header)
+        <header>
+            <div class="container" style="padding-top: 10px;">
+                {{ $header }}
+            </div>
+        </header>
+    @endisset
+
     <main>
-        @yield('content')
+        @isset($slot)
+            {{ $slot }}
+        @else
+            @yield('content')
+        @endisset
     </main>
 
     @include('layouts.footer')
