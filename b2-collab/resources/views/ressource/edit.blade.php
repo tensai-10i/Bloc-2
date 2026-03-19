@@ -4,56 +4,91 @@
 
 @section('content')
 
-    <link rel="stylesheet" href="{{ asset('css/global.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/ressource.css') }}">
-
     <div class="page-wrapper">
 
         <div class="page-header">
-            <h1>Modifier une ressource</h1>
+            <h1>Modifier la ressource</h1>
+            <a href="{{ route('ressources.index') }}" class="btn btn-outline">Retour</a>
         </div>
 
-        <div class="card">
+        @if($errors->any())
+            <div class="alert alert-error">
+                @foreach($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
 
-            <form action="{{ route('ressources.update', $ressource->id_ressource) }}" method="POST">
-                @csrf
-                @method('PUT')
+        <form action="{{ route('ressources.update', $ressource->id_ressource) }}" method="POST">
+            @csrf
+            @method('PUT')
 
-                <div class="form-group">
+            <div class="create-grid">
+                <div class="create-main">
 
-                    <label for="name_ressource">Nom de la ressource</label>
+                    <p class="section-title">Informations de la ressource</p>
 
-                    <input
-                        type="text"
-                        id="name_ressource"
-                        name="name_ressource"
-                        value="{{ old('name_ressource', $ressource->name_ressource) }}"
-                        required
-                    >
-
-                    @error('name_ressource')
-                    <div class="form-error">
-                        {{ $message }}
+                    <div class="form-group">
+                        <label for="name_ressource">Nom de la ressource</label>
+                        <input type="text" id="name_ressource" name="name_ressource"
+                               value="{{ old('name_ressource', $ressource->name_ressource) }}"
+                               placeholder="Ex : Guide de démarrage"
+                               required>
+                        @error('name_ressource')
+                        <div class="form-error">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @enderror
+
+                    <div class="form-group">
+                        <label for="id_typeressource">Type de ressource</label>
+                        <select id="id_typeressource" name="id_typeressource" required>
+                            <option value="">— Sélectionner un type —</option>
+                            @foreach($types as $type)
+                                <option value="{{ $type->id_typeressource }}"
+                                    {{ old('id_typeressource', $ressource->id_typeressource) == $type->id_typeressource ? 'selected' : '' }}>
+                                    {{ $type->name_typeressource }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_typeressource')
+                        <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_cat">Catégorie</label>
+                        <select id="id_cat" name="id_cat" required>
+                            <option value="">— Sélectionner une catégorie —</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id_cat }}"
+                                    {{ old('id_cat', $ressource->id_cat) == $category->id_cat ? 'selected' : '' }}>
+                                    {{ $category->name_cat }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_cat')
+                        <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description <span class="text-muted">(optionnel)</span></label>
+                        <textarea id="description" name="description"
+                                  placeholder="Décrivez cette ressource…">{{ old('description', $ressource->description) }}</textarea>
+                        @error('description')
+                        <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        <a href="{{ route('ressources.index') }}" class="btn btn-outline">Annuler</a>
+                    </div>
 
                 </div>
+            </div>
 
-                <div class="form-actions">
-
-                    <a href="{{ route('ressources.index') }}" class="btn btn-outline">
-                        Annuler
-                    </a>
-
-                    <button type="submit" class="btn btn-primary">
-                        Enregistrer
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
+        </form>
 
     </div>
 

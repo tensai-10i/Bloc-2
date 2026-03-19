@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TypeRessourceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RessourcesController;
@@ -12,10 +13,10 @@ Route::get('/', function () {
     return redirect()->route('ressources.index');
 })->name('home');
 
-// Resources and categories
-Route::resource('ressources', RessourcesController::class)->except(['show']);
-Route::resource('category', CategoryController::class)->except(['show']);
-
+// Resources  Categories TypeRessource
+Route::resource('ressources', RessourcesController::class);
+Route::resource('category', CategoryController::class);
+Route::resource('type_ressource', TypeRessourceController::class);
 // Legal and support pages
 Route::get('/mentions-legales', function () {
     return view('legal.mentions');
