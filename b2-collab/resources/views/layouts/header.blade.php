@@ -1,7 +1,7 @@
 <header>
     <div class="container navbar-wrapper">
         <nav class="navbar">
-            <a href="{{ url('/') }}">Accueil</a>
+            <a href="{{ route('home') }}">Accueil</a>
             <a href="{{ route('ressources.index') }}">Ressources</a>
             <a href="{{ route('support') }}">Support</a>
             <a href="{{ route('contact') }}">Contact</a>

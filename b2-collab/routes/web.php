@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\UserRoleController;
 
 // Public pages
 Route::get('/', function () {
-    return redirect()->route('ressources.index');
+    return view('index');
 })->name('home');
 
 // Resources  Categories TypeRessource
