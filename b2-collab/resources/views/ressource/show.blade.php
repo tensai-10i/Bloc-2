@@ -4,14 +4,17 @@
 
 @section('content')
 
-    <div class="page-wrapper">
+    <div class="page-wrapper page-wrapper--narrow">
 
         <div class="page-header">
-            <h1>{{ $ressource->name_ressource }}</h1>
-            <div style="display:flex; gap:0.6rem">
-                <a href="{{ route('ressources.edit', $ressource->id_ressource) }}" class="btn btn-primary">
-                    Modifier
-                </a>
+            <div class="page-title-block">
+                <p class="page-kicker">Bibliothèque</p>
+                <h1>{{ $ressource->name_ressource }}</h1>
+                <p class="page-subtitle">Consultez la ressource avec le même niveau de finition visuelle que le reste du site.</p>
+            </div>
+
+            <div class="page-header-actions">
+                <a href="{{ route('ressources.edit', $ressource->id_ressource) }}" class="btn btn-primary">Modifier</a>
                 <a href="{{ route('ressources.index') }}" class="btn btn-outline">Retour</a>
             </div>
         </div>
@@ -42,7 +45,7 @@
 
                 <div class="form-group">
                     <label>Description</label>
-                    <div class="input-display" style="min-height:80px">
+                    <div class="input-display input-display--large input-display--top">
                         {{ $ressource->description ?? '—' }}
                     </div>
                 </div>
@@ -54,10 +57,8 @@
                     </div>
                 </div>
 
-                <div class="form-actions" style="border-top:1px solid var(--green-pale); padding-top:1.25rem; margin-top:1rem">
-                    <form action="{{ route('ressources.destroy', $ressource->id_ressource) }}"
-                          method="POST"
-                          onsubmit="return confirm('Supprimer cette ressource ?')">
+                <div class="form-actions">
+                    <form action="{{ route('ressources.destroy', $ressource->id_ressource) }}" method="POST" onsubmit="return confirm('Supprimer cette ressource ?')">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger">Supprimer</button>

@@ -4,17 +4,18 @@
 
 @section('content')
 
-    <link rel="stylesheet" href="{{ asset('css/global.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/category.css') }}">
-
-    <div class="page-wrapper">
+    <div class="page-wrapper page-wrapper--narrow">
 
         <div class="page-header">
-            <h1>Nouvelle catégorie</h1>
+            <div class="page-title-block">
+                <p class="page-kicker">Bibliothèque</p>
+                <h1>Nouvelle catégorie</h1>
+                <p class="page-subtitle">Ajoutez une catégorie dans le même langage visuel que la page d'accueil.</p>
+            </div>
 
-            <a href="{{ route('category.index') }}" class="btn btn-outline">
-                Retour
-            </a>
+            <div class="page-header-actions">
+                <a href="{{ route('category.index') }}" class="btn btn-outline">Retour</a>
+            </div>
         </div>
 
         <div class="form-card">
@@ -28,29 +29,21 @@
             @endif
 
             <form action="{{ route('category.store') }}" method="POST">
-
                 @csrf
 
                 <div class="form-group">
                     <label for="name_cat">Nom de la catégorie</label>
-
-                    <input type="text"
-                           id="name_cat"
-                           name="name_cat"
-                           value="{{ old('name_cat') }}"
-                           required>
+                    <input type="text" id="name_cat" name="name_cat" value="{{ old('name_cat') }}" required>
 
                     @error('name_cat')
-                    <div class="form-error">{{ $message }}</div>
+                        <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        Créer la catégorie
-                    </button>
+                    <button type="submit" class="btn btn-primary">Créer la catégorie</button>
+                    <a href="{{ route('category.index') }}" class="btn btn-outline">Annuler</a>
                 </div>
-
             </form>
 
         </div>

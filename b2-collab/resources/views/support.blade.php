@@ -6,7 +6,11 @@
 
 <section class="container tools-page">
 
-    <h1 class="tools-title">Outils</h1>
+    <div class="page-title-block">
+        <p class="page-kicker">Support</p>
+        <h1 class="tools-title">Outils</h1>
+        <p class="page-intro">Une sélection d'outils et de contenus pratiques, présentés dans la même identité visuelle que la page d'accueil.</p>
+    </div>
 
     <section class="wave-section">
         <div class="wave-line one"></div>
@@ -22,12 +26,12 @@
             <ul>
                 <li>exercice de communication</li>
                 <li>jeu de rôle</li>
-                <li>test d’écoute active</li>
+                <li>test d'écoute active</li>
             </ul>
         </a>
 
         <a href="#" class="tool-card">
-            <h3>Outils d’auto évaluation</h3>
+            <h3>Outils d'auto évaluation</h3>
 
             <ul>
                 <li>questionnaires</li>

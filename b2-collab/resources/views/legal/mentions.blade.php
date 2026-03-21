@@ -4,7 +4,11 @@
 
 @section('content')
 <section class="legal-page container">
-    <h1 class="legal-main-title">Mentions légales</h1>
+    <div class="page-title-block">
+        <p class="page-kicker">Informations</p>
+        <h1 class="legal-main-title">Mentions légales</h1>
+        <p class="page-intro">Les pages légales adoptent désormais la même sobriété premium, les mêmes espacements et les mêmes cartes que le reste du site.</p>
+    </div>
 
     <div class="legal-card">
 
@@ -13,7 +17,7 @@
                 <h2>Éditeur du site</h2>
                 <p>
                     Le site <strong>RESources Relationnelles</strong> est un projet pédagogique réalisé dans le cadre
-                    d’un travail collaboratif de développement web.
+                    d'un travail collaboratif de développement web.
                 </p>
                 <p>
                     Responsable de publication : équipe projet B2 Collab.
@@ -26,7 +30,7 @@
                     Le site est hébergé sur un environnement de développement utilisé dans le cadre du projet.
                 </p>
                 <p>
-                    Les informations techniques liées à l’hébergement peuvent être précisées dans la documentation du dépôt GitHub.
+                    Les informations techniques liées à l'hébergement peuvent être précisées dans la documentation du dépôt GitHub.
                 </p>
             </section>
 
@@ -38,7 +42,7 @@
                 </p>
                 <p>
                     Toute reproduction, représentation ou diffusion, même partielle, sans autorisation préalable,
-                    n’est pas autorisée en dehors du cadre de ce projet.
+                    n'est pas autorisée en dehors du cadre de ce projet.
                 </p>
             </section>
 
@@ -49,15 +53,15 @@
                     applicables à la protection des données.
                 </p>
                 <p>
-                    Aucune donnée n’est utilisée à des fins commerciales dans le cadre de ce projet.
+                    Aucune donnée n'est utilisée à des fins commerciales dans le cadre de ce projet.
                 </p>
             </section>
 
             <section class="legal-block">
                 <h2>Responsabilité</h2>
                 <p>
-                    L’équipe projet s’efforce de fournir des informations exactes et à jour. Toutefois, aucune garantie
-                    n’est donnée quant à l’exhaustivité ou à l’absence d’erreur dans les contenus proposés.
+                    L'équipe projet s'efforce de fournir des informations exactes et à jour. Toutefois, aucune garantie
+                    n'est donnée quant à l'exhaustivité ou à l'absence d'erreur dans les contenus proposés.
                 </p>
             </section>
         </div>

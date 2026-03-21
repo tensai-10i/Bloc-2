@@ -7,12 +7,16 @@
     <div class="page-wrapper">
 
         <div class="page-header">
-            <h1>
-                Ressources
-                @if(!$ressources->isEmpty())
-                    <span class="count-badge">{{ $ressources->count() }}</span>
-                @endif
-            </h1>
+            <div class="page-title-block">
+                <p class="page-kicker">Bibliothèque</p>
+                <h1>
+                    Ressources
+                    @if(!$ressources->isEmpty())
+                        <span class="count-badge">{{ $ressources->total() }}</span>
+                    @endif
+                </h1>
+                <p class="page-subtitle">Toutes les ressources reprennent les couleurs, les surfaces et les interactions de la home.</p>
+            </div>
         </div>
 
         <div class="toolbar">
@@ -25,15 +29,9 @@
             </div>
 
             <div class="toolbar-actions">
-                <a href="{{ route('ressources.create') }}" class="btn btn-primary">
-                    + Nouvelle ressource
-                </a>
-                <a href="{{ route('type_ressource.index') }}" class="btn btn-outline">
-                    Types de ressource
-                </a>
-                <a href="{{ route('category.index') }}" class="btn btn-outline">
-                    Catégories
-                </a>
+                <a href="{{ route('ressources.create') }}" class="btn btn-primary">+ Nouvelle ressource</a>
+                <a href="{{ route('type_ressource.index') }}" class="btn btn-outline">Types de ressource</a>
+                <a href="{{ route('category.index') }}" class="btn btn-outline">Catégories</a>
             </div>
         </div>
 
@@ -73,12 +71,12 @@
                                     <span class="ressource-name">{{ $ressource->name_ressource }}</span>
                                 </td>
                                 <td>
-                                    <span class="type-badge">
+                                    <span class="meta-badge">
                                         {{ $ressource->typeRessource->name_typeressource ?? '—' }}
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="cat-badge">
+                                    <span class="meta-badge">
                                         {{ $ressource->category->name_cat ?? '—' }}
                                     </span>
                                 </td>
@@ -87,18 +85,13 @@
                                 </td>
                                 <td>
                                     <div class="actions-cell">
-                                        <a href="{{ route('ressources.show', $ressource->id_ressource) }}"
-                                           class="btn btn-outline btn-sm">
+                                        <a href="{{ route('ressources.show', $ressource->id_ressource) }}" class="btn btn-outline btn-sm">
                                             Voir
                                         </a>
-                                        <a href="{{ route('ressources.edit', $ressource->id_ressource) }}"
-                                           class="btn btn-outline btn-sm">
+                                        <a href="{{ route('ressources.edit', $ressource->id_ressource) }}" class="btn btn-outline btn-sm">
                                             Modifier
                                         </a>
-                                        <form action="{{ route('ressources.destroy', $ressource->id_ressource) }}"
-                                              method="POST"
-                                              style="display:inline"
-                                              onsubmit="return confirm('Supprimer cette ressource ?')">
+                                        <form action="{{ route('ressources.destroy', $ressource->id_ressource) }}" method="POST" class="inline-form" onsubmit="return confirm('Supprimer cette ressource ?')">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-danger btn-sm">Supprimer</button>
@@ -113,6 +106,12 @@
 
             </div>
         </div>
+
+        @if($ressources->hasPages())
+            <div class="pagination-shell">
+                {{ $ressources->links() }}
+            </div>
+        @endif
 
     </div>
 

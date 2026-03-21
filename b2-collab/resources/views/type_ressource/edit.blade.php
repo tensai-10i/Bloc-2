@@ -4,11 +4,18 @@
 
 @section('content')
 
-    <div class="page-wrapper">
+    <div class="page-wrapper page-wrapper--narrow">
 
         <div class="page-header">
-            <h1>Modifier le type</h1>
-            <a href="{{ route('type_ressource.index') }}" class="btn btn-outline">Retour</a>
+            <div class="page-title-block">
+                <p class="page-kicker">Bibliothèque</p>
+                <h1>Modifier le type</h1>
+                <p class="page-subtitle">Conservez la structure existante tout en alignant la page sur le style premium du site.</p>
+            </div>
+
+            <div class="page-header-actions">
+                <a href="{{ route('type_ressource.index') }}" class="btn btn-outline">Retour</a>
+            </div>
         </div>
 
         @if($errors->any())

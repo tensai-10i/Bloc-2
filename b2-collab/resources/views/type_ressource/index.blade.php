@@ -7,15 +7,20 @@
     <div class="page-wrapper">
 
         <div class="page-header">
-            <h1>
-                Types de ressource
-                @if($types->count())
-                    <span class="count-badge">{{ $types->count() }}</span>
-                @endif
-            </h1>
-            <a href="{{ route('type_ressource.create') }}" class="btn btn-primary">
-                + Nouveau type
-            </a>
+            <div class="page-title-block">
+                <p class="page-kicker">Bibliothèque</p>
+                <h1>
+                    Types de ressource
+                    @if($types->count())
+                        <span class="count-badge">{{ $types->count() }}</span>
+                    @endif
+                </h1>
+                <p class="page-subtitle">Chaque type est présenté avec les mêmes volumes, arrondis et contrastes que la home.</p>
+            </div>
+
+            <div class="page-header-actions">
+                <a href="{{ route('type_ressource.create') }}" class="btn btn-primary">+ Nouveau type</a>
+            </div>
         </div>
 
         @if(session('success'))
@@ -51,10 +56,8 @@
                                 <td>
                                     <div class="actions-cell">
                                         <a href="{{ route('type_ressource.show', $type->id_typeressource) }}" class="btn btn-outline btn-sm">Voir</a>
-                                        <a href="{{ route('type_ressource.edit', $type->id_typeressource) }}" class="btn btn-outline btn-sm">Editer</a>
-                                        <form action="{{ route('type_ressource.destroy', $type->id_typeressource) }}"
-                                              method="POST" style="display:inline"
-                                              onsubmit="return confirm('Supprimer ce type ?')">
+                                        <a href="{{ route('type_ressource.edit', $type->id_typeressource) }}" class="btn btn-outline btn-sm">Éditer</a>
+                                        <form action="{{ route('type_ressource.destroy', $type->id_typeressource) }}" method="POST" class="inline-form" onsubmit="return confirm('Supprimer ce type ?')">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-danger btn-sm">Supprimer</button>
