@@ -11,11 +11,9 @@ class RessourcesController extends Controller
 {
     public function index()
     {
-        $ressources = Ressources::with('category', 'typeRessource')->paginate(15);
-
+        $ressources = Ressources::with(['typeRessource', 'category'])->paginate(10);
         return view('ressource.index', compact('ressources'));
     }
-
     public function create()
     {
         $categories = Category::all();
@@ -57,43 +55,46 @@ class RessourcesController extends Controller
 
     public function edit($id)
     {
-        $ressource   = Ressources::findOrFail($id);
-        $categories  = Category::all();
-        $types       = TypeRessource::all();
+        $ressource = Ressources::findOrFail($id);
+
+        if (auth()->id() !== $ressource->user_id && auth()->user()->role !== 'admin') {
+            abort(403);
+        }
+
+        $categories = Category::all();
+        $types      = TypeRessource::all();
 
         return view('ressource.edit', compact('ressource', 'categories', 'types'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name_ressource' => 'required|string|max:255',
-            'description'    => 'nullable|string',
-            'category_id'    => 'nullable|exists:category,id_cat',
-            'type_id'        => 'nullable|exists:types_ressources,id_typeressource',
-        ]);
-
         $ressource = Ressources::findOrFail($id);
 
-        $ressource->update([
-            'name_ressource' => $request->name_ressource,
-            'description'    => $request->description,
-            'category_id'    => $request->category_id,
-            'type_id'        => $request->type_id,
+        if (auth()->id() !== $ressource->user_id && auth()->user()->role !== 'admin') {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'name_ressource'   => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'id_cat'           => 'nullable|exists:category,id_cat',
+            'id_typeressource' => 'nullable|exists:types_ressources,id_typeressource',
         ]);
 
-        return redirect()
-            ->route('ressources.index')
-            ->with('success', 'Ressource modifiée avec succès');
-    }
+        $ressource->update($data);
 
+        return redirect()->route('ressources.index')->with('success', 'Ressource mise à jour.');
+    }
     public function destroy($id)
     {
         $ressource = Ressources::findOrFail($id);
-        $ressource->delete();
 
-        return redirect()
-            ->route('ressources.index')
-            ->with('success', 'Ressource supprimée avec succès');
+        if (auth()->id() !== $ressource->user_id && auth()->user()->role !== 'admin') {
+            abort(403);
+        }
+
+        $ressource->delete();
+        return redirect()->route('ressources.index')->with('success', 'Ressource supprimée.');
     }
 }

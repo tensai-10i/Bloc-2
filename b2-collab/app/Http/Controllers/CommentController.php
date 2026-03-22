@@ -3,22 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
-use App\Models\Ressource;
+use App\Models\Ressources;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function store(Request $request, Ressource $ressource)
+    public function store(Request $request, $ressource)
     {
         $request->validate([
-            'content' => 'required|string|max:1000',
+            'content' => 'required|string|max:2000',
         ]);
 
-        $ressource->comments()->create([
-            'user_id' => auth()->id(),
+        $ressourceModel = Ressources::findOrFail($ressource);
+
+        $ressourceModel->comments()->create([
             'content' => $request->input('content'),
+            'user_id' => auth()->id(),
         ]);
 
-        return redirect()->back()->with('success', 'Commentaire ajouté !');
+        return back()->with('success', 'Commentaire ajouté.');
     }
 }

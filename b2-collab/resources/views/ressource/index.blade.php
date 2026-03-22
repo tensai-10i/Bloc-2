@@ -88,14 +88,18 @@
                                         <a href="{{ route('ressources.show', $ressource->id_ressource) }}" class="btn btn-outline btn-sm">
                                             Voir
                                         </a>
-                                        <a href="{{ route('ressources.edit', $ressource->id_ressource) }}" class="btn btn-outline btn-sm">
-                                            Modifier
-                                        </a>
-                                        <form action="{{ route('ressources.destroy', $ressource->id_ressource) }}" method="POST" class="inline-form" onsubmit="return confirm('Supprimer cette ressource ?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger btn-sm">Supprimer</button>
-                                        </form>
+
+                                        @if(auth()->id() === $ressource->user_id || auth()->user()->role === 'admin')
+                                            <a href="{{ route('ressources.edit', $ressource->id_ressource) }}" class="btn btn-outline btn-sm">
+                                                Modifier
+                                            </a>
+                                            <form action="{{ route('ressources.destroy', $ressource->id_ressource) }}" method="POST"
+                                                  class="inline-form" onsubmit="return confirm('Supprimer cette ressource ?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm">Supprimer</button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
