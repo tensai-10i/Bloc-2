@@ -15,20 +15,28 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // -------------------------
+        // APPELS DES SEEDERS
+        // -------------------------
+        $this->call([
+            TypeRessourceSeeder::class,
+            CategorySeeder::class,
+        ]);
+
+        // -------------------------
         // ROLES
         // -------------------------
         foreach ([
-            ['name' => 'superadmin', 'description' => 'Superadministrateur'],
-            ['name' => 'admin', 'description' => 'Administrateur'],
-            ['name' => 'moderator', 'description' => 'Moderateur'],
-            ['name' => 'user', 'description' => 'Utilisateur'],
-        ] as $role) {
+                     ['name' => 'superadmin', 'description' => 'Superadministrateur'],
+                     ['name' => 'admin', 'description' => 'Administrateur'],
+                     ['name' => 'moderator', 'description' => 'Moderateur'],
+                     ['name' => 'user', 'description' => 'Utilisateur'],
+                 ] as $role) {
             DB::table('roles')->updateOrInsert(
                 ['name' => $role['name']],
                 [
                     'description' => $role['description'],
-                    'updated_at' => now(),
                     'created_at' => now(),
+                    'updated_at' => now(),
                 ]
             );
         }
@@ -36,7 +44,6 @@ class DatabaseSeeder extends Seeder
         // -------------------------
         // USERS
         // -------------------------
-
         $superadmin = User::query()->updateOrCreate(
             ['email' => 'superadmin@example.com'],
             [
@@ -72,60 +79,5 @@ class DatabaseSeeder extends Seeder
                 'role' => 'user',
             ]
         );
-
-        // -------------------------
-        // RESSOURCES
-        // -------------------------
-
-        DB::table('ressources')->insert([
-            [
-                'title' => 'Gérer le stress au quotidien',
-                'content' => 'Techniques simples pour réduire le stress : respiration, organisation et pauses.',
-                'type' => 'article',
-                'user_id' => $superadmin->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Exercices de respiration',
-                'content' => '5 exercices efficaces pour calmer rapidement l’anxiété.',
-                'type' => 'guide',
-                'user_id' => $admin->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Comprendre ses émotions',
-                'content' => 'Identifier et gérer ses émotions pour améliorer son bien-être.',
-                'type' => 'article',
-                'user_id' => $moderator->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Routine bien-être du matin',
-                'content' => 'Créer une routine matinale efficace pour démarrer la journée.',
-                'type' => 'guide',
-                'user_id' => $user->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Podcast : lâcher prise',
-                'content' => 'Un podcast pour apprendre à relativiser et lâcher prise.',
-                'type' => 'podcast',
-                'user_id' => $user->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Méditation guidée',
-                'content' => 'Séance de méditation pour débutants.',
-                'type' => 'video',
-                'user_id' => $admin->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
     }
 }

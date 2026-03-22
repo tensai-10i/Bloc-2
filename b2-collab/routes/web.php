@@ -54,6 +54,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::middleware('auth')->group(function() {
+    Route::post('/ressources/{ressource}/comments', [CommentController::class, 'store'])->name('ressources.comments.store');
+});
 
 // Public user profile page
 Route::get('/profile/{user}', [UserController::class, 'show'])->name('profile.show');

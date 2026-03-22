@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('types_ressources', function (Blueprint $table) {
-            $table->id('id_typeressource');     // clé primaire
+            $table->id('id_typeressource');
             $table->string('name_typeressource'); // nom du type
 
             $table->timestamps();               // created_at / updated_at
