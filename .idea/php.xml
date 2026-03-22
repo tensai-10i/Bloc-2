@@ -132,6 +132,8 @@
       <path value="$PROJECT_DIR$/b2-collab/vendor/tijsverkoyen/css-to-inline-styles" />
       <path value="$PROJECT_DIR$/b2-collab/vendor/dragonmantank/cron-expression" />
       <path value="$PROJECT_DIR$/b2-collab/vendor/graham-campbell/result-type" />
+      <path value="$PROJECT_DIR$/b2-collab/vendor/laravel/breeze" />
+      <path value="$PROJECT_DIR$/b2-collab/vendor/laravel/sanctum" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">

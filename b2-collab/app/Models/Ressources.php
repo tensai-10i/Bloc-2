@@ -25,6 +25,6 @@ class Ressources extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'ressource_id', 'id_ressource')->latest();
+        return $this->hasMany(Comment::class, 'resource_id', 'id_ressource')->latest();
     }
 }

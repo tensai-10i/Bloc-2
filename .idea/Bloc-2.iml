@@ -6,6 +6,8 @@
       <sourceFolder url="file://$MODULE_DIR$/b2-collab/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/b2-collab/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/b2-collab/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/b2-collab/tests/Feature" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/b2-collab/tests/Unit" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/carbonphp/carbon-doctrine-types" />
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/composer" />
@@ -123,6 +125,8 @@
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/storage/app" />
       <excludeFolder url="file://$MODULE_DIR$/b2-collab/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/laravel/breeze" />
+      <excludeFolder url="file://$MODULE_DIR$/b2-collab/vendor/laravel/sanctum" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
