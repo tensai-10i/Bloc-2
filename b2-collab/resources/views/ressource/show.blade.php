@@ -3,366 +3,270 @@
 @section('title', $ressource->name_ressource)
 
 @push('styles')
-    {{-- Nunito + Lora already loaded via your global CSS --}}
     <style>
-        /* ── Article page layout ─────────────────────────── */
-        .article-page {
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 2.5rem 1.5rem 4rem;
+        .resource-show-page {
+            display: grid;
+            gap: 24px;
         }
 
-        /* ── Back link ───────────────────────────────────── */
-        .article-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text-light);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 2rem;
-            transition: color 0.18s;
-        }
-        .article-back:hover { color: var(--green-dark); }
-        .article-back svg { transition: transform 0.18s; }
-        .article-back:hover svg { transform: translateX(-3px); }
-
-        /* ── Header ──────────────────────────────────────── */
-        .article-header {
-            margin-bottom: 2rem;
+        .resource-hero,
+        .resource-comments-panel {
+            display: grid;
+            gap: 24px;
         }
 
-        .article-header h1 {
-            font-family: 'Lora', serif;
-            font-size: clamp(1.6rem, 4vw, 2.4rem);
-            font-weight: 600;
-            color: var(--green-dark);
-            line-height: 1.25;
-            margin-bottom: 0.9rem;
+        .resource-hero {
+            padding: 28px;
         }
 
-        .article-meta-pills {
+        .resource-show-meta {
+            margin-top: 4px;
+        }
+
+        .resource-show-content {
+            display: grid;
+            gap: 16px;
+        }
+
+        .resource-richtext {
+            margin: 0;
+            color: var(--text-soft);
+            font-size: 16px;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .resource-comments-header {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            align-items: center;
         }
 
-        .meta-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            background: var(--green-pale);
-            color: var(--text-mid);
-            font-size: 0.78rem;
-            font-weight: 600;
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .meta-pill svg { color: var(--green-mid); flex-shrink: 0; }
-
-        /* ── Content section ─────────────────────────────── */
-        .article-content {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.75rem 2rem;
-            box-shadow: 0 2px 12px var(--shadow);
-            margin-bottom: 2.5rem;
-            font-size: 0.975rem;
-            line-height: 1.75;
-            color: var(--text-dark);
-        }
-
-        /* ── Section divider ─────────────────────────────── */
-        .section-divider {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-divider h2 {
-            font-family: 'Lora', serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--green-dark);
-            white-space: nowrap;
-        }
-
-        .section-divider-line {
-            flex: 1;
-            height: 1px;
-            background: var(--green-pale);
-        }
-
-        /* ── Comment card ────────────────────────────────── */
         .comment-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            display: grid;
+            gap: 16px;
         }
 
         .comment-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1rem 1.25rem;
-            box-shadow: 0 1px 6px var(--shadow);
-            transition: box-shadow 0.18s;
+            display: grid;
+            gap: 12px;
+            padding: 22px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(111, 159, 143, 0.16);
+            background: rgba(255, 255, 255, 0.78);
+            box-shadow: 0 12px 24px rgba(73, 67, 58, 0.06);
         }
 
-        .comment-card:hover {
-            box-shadow: 0 4px 16px var(--shadow);
-        }
-
-        .comment-author-row {
+        .comment-header {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.55rem;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .comment-avatar {
-            width: 32px;
-            height: 32px;
-            background: var(--green-pale);
-            border: 1.5px solid var(--green-light);
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            display: flex;
+            background: rgba(111, 159, 143, 0.14);
+            border: 1px solid rgba(111, 159, 143, 0.22);
+            color: var(--brand-deep);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--green-dark);
+            flex: 0 0 auto;
+        }
+
+        .comment-author-meta {
+            display: grid;
+            gap: 2px;
         }
 
         .comment-author-name {
+            color: #4b4b4b;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .comment-author-role {
+            color: var(--text-muted);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
             font-weight: 700;
-            font-size: 0.88rem;
-            color: var(--text-dark);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
         .comment-date {
             margin-left: auto;
-            font-size: 0.75rem;
-            color: var(--text-light);
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         .comment-text {
-            font-size: 0.9rem;
-            line-height: 1.65;
-            color: var(--text-mid);
-            padding-left: calc(32px + 0.75rem);
+            margin: 0;
+            color: var(--text-soft);
+            font-size: 15px;
+            line-height: 1.75;
         }
 
-        /* ── Empty comments ──────────────────────────────── */
-        .comments-empty {
-            text-align: center;
-            padding: 2.5rem 1rem;
-            color: var(--text-light);
-            background: var(--green-bg);
-            border: 1.5px dashed var(--border);
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-            font-style: italic;
-        }
-
-        .comments-empty svg { margin-bottom: 0.6rem; opacity: 0.4; }
-
-        /* ── Comment form ────────────────────────────────── */
-        .comment-form-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 12px var(--shadow);
-        }
-
-        .comment-form-card h3 {
-            font-family: 'Lora', serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--green-dark);
-            margin-bottom: 1rem;
-        }
-
-        .comment-form-card textarea {
-            width: 100%;
-            padding: 0.7rem 0.9rem;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            background: var(--white);
-            outline: none;
-            resize: vertical;
-            min-height: 100px;
-            transition: border-color 0.18s, box-shadow 0.18s;
-        }
-
-        .comment-form-card textarea:focus {
-            border-color: var(--green-mid);
-            box-shadow: 0 0 0 3px rgba(90, 158, 137, 0.15);
-        }
-
-        .comment-form-card textarea::placeholder { color: var(--text-light); }
-
-        .comment-form-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 0.75rem;
-        }
-
-        /* ── Login prompt ────────────────────────────────── */
+        .comments-empty,
         .login-prompt {
+            padding: 22px;
+            border-radius: var(--radius-md);
+            border: 1px dashed rgba(111, 159, 143, 0.24);
+            background: rgba(255, 255, 255, 0.68);
+            color: var(--text-soft);
             text-align: center;
-            padding: 1.25rem;
-            background: var(--green-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 0.88rem;
-            color: var(--text-mid);
+            line-height: 1.7;
+        }
+
+        .resource-comment-form {
+            padding-top: 24px;
+            border-top: 1px solid rgba(111, 159, 143, 0.14);
+        }
+
+        .resource-comment-form h2 {
+            margin: 0 0 18px;
+            color: #4b4b4b;
+            font-size: 24px;
+            font-weight: 500;
         }
 
         .login-prompt a {
-            color: var(--green-dark);
+            color: var(--brand-deep);
+            font-family: Arial, Helvetica, sans-serif;
             font-weight: 700;
-            text-decoration: none;
         }
 
-        .login-prompt a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .resource-hero,
+            .resource-comments-panel,
+            .comment-card {
+                padding: 22px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .comment-date {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .resource-comment-form h2 {
+                font-size: 22px;
+            }
+        }
     </style>
 @endpush
 
 @section('content')
-    <div class="article-page">
+    <div class="page-wrapper page-wrapper--narrow resource-show-page">
 
-        {{-- ── Back link ──────────────────────────────────── --}}
-        <a href="{{ url()->previous() }}" class="article-back">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5M12 5l-7 7 7 7"/>
-            </svg>
-            Retour
-        </a>
-
-        {{-- ── Header ─────────────────────────────────────── --}}
-        <header class="article-header">
-            <h1>{{ $ressource->name_ressource }}</h1>
-
-            <div class="article-meta-pills">
-                {{-- Type --}}
-                <span class="meta-pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 6h16M4 12h10M4 18h6"/>
-                </svg>
-                {{ $ressource->typeRessource->name_typeressource ?? '—' }}
-            </span>
-
-                {{-- Category --}}
-                <span class="meta-pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"/>
-                </svg>
-                {{ $ressource->category->name_cat ?? '—' }}
-            </span>
-
-                {{-- Date --}}
-                <span class="meta-pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
-                </svg>
-                {{ $ressource->created_at->format('d/m/Y') }}
-            </span>
+        <div class="page-header">
+            <div class="page-title-block">
+                <p class="page-kicker">Bibliothèque</p>
+                <h1>{{ $ressource->name_ressource }}</h1>
+                <p class="page-subtitle">Consultez le détail de la ressource dans la même continuité visuelle que le reste du site.</p>
             </div>
-        </header>
 
-        {{-- ── Description ─────────────────────────────────── --}}
-        <div class="article-content">
-            {{ $ressource->description ?? 'Pas de description disponible.' }}
+            <div class="page-header-actions">
+                <a href="{{ route('ressources.index') }}" class="btn btn-outline">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M19 12H5M12 5l-7 7 7 7"/>
+                    </svg>
+                    Retour
+                </a>
+            </div>
         </div>
 
-        {{-- ── Comments section ────────────────────────────── --}}
-        <section class="comments">
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
-            <div class="section-divider">
-                <h2>
-                    Commentaires
-                    <span class="count-badge">{{ $ressource->comments->count() }}</span>
-                </h2>
-                <div class="section-divider-line"></div>
+        <section class="create-main resource-hero">
+            <div class="info-grid resource-show-meta">
+                <div class="info-item">
+                    <p class="info-label">Type</p>
+                    <p class="info-value">{{ $ressource->typeRessource->name_typeressource ?? '—' }}</p>
+                </div>
+                <div class="info-item">
+                    <p class="info-label">Catégorie</p>
+                    <p class="info-value">{{ $ressource->category->name_cat ?? '—' }}</p>
+                </div>
+                <div class="info-item">
+                    <p class="info-label">Créée le</p>
+                    <p class="info-value">{{ $ressource->created_at->format('d/m/Y') }}</p>
+                </div>
+            </div>
+
+            <div class="resource-show-content">
+                <p class="section-title">Description</p>
+                <p class="resource-richtext">{{ $ressource->description ?? 'Pas de description disponible.' }}</p>
+            </div>
+        </section>
+
+        <section class="summary-card resource-comments-panel">
+            <div class="resource-comments-header">
+                <p class="section-title">Commentaires</p>
+                <span class="count-badge">{{ $ressource->comments->count() }}</span>
             </div>
 
             @if($ressource->comments->isEmpty())
                 <div class="comments-empty">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                         style="display:block;margin:0 auto 0.6rem;">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                    </svg>
                     Aucun commentaire pour le moment. Soyez le premier !
                 </div>
             @else
                 <div class="comment-list">
                     @foreach($ressource->comments as $comment)
-                        <div class="comment-card">
-                            <div class="comment-author-row">
+                        <article class="comment-card">
+                            <div class="comment-header">
                                 <div class="comment-avatar">
                                     {{ strtoupper(substr($comment->user->name ?? '?', 0, 1)) }}
                                 </div>
-                                <span class="comment-author-name">{{ $comment->user->name ?? 'Anonyme' }}</span>
+
+                                <div class="comment-author-meta">
+                                    <span class="comment-author-name">{{ $comment->user->name ?? 'Anonyme' }}</span>
+                                    <span class="comment-author-role">Membre</span>
+                                </div>
+
                                 <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
                             </div>
+
                             <p class="comment-text">{{ $comment->content }}</p>
-                        </div>
+                        </article>
                     @endforeach
                 </div>
             @endif
 
-            {{-- ── Form / Login prompt ─────────────────────── --}}
             @auth
-                <div class="comment-form-card">
-                    <h3>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-                             style="display:inline;vertical-align:middle;margin-right:0.35rem;">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                        </svg>
-                        Laisser un commentaire
-                    </h3>
+                <div class="resource-comment-form">
+                    <h2>Laisser un commentaire</h2>
 
                     <form action="{{ route('ressources.comments.store', $ressource->id_ressource) }}" method="POST">
                         @csrf
 
-                        <textarea
-                            name="content"
-                            rows="3"
-                            placeholder="Partagez votre avis..."
-                            required
-                        >{{ old('content') }}</textarea>
+                        <div class="form-group">
+                            <label for="content">Votre message</label>
+                            <textarea id="content" name="content" rows="4" placeholder="Partagez votre avis..." required>{{ old('content') }}</textarea>
+                        </div>
 
                         @error('content')
-                        <p class="form-error">{{ $message }}</p>
+                            <p class="form-error">{{ $message }}</p>
                         @enderror
 
-                        <div class="comment-form-footer">
+                        <div class="form-actions">
                             <button type="submit" class="btn btn-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <line x1="22" y1="2" x2="11" y2="13"/>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
                                 </svg>
                                 Envoyer
                             </button>
@@ -374,7 +278,6 @@
                     <a href="{{ route('login') }}">Connectez-vous</a> pour laisser un commentaire.
                 </div>
             @endauth
-
         </section>
 
     </div>
