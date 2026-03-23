@@ -11,7 +11,7 @@ class RessourcesController extends Controller
 {
     public function index()
     {
-        $ressources = Ressources::with(['typeRessource', 'category'])->paginate(10);
+        $ressources = Ressources::with('category', 'typeRessource')->paginate(15);
         return view('ressource.index', compact('ressources'));
     }
     public function create()
