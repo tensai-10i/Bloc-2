@@ -1,0 +1,11 @@
+/* ══════════════════════════════════════
+   RESSOURCES — styles spécifiques
+   Dépend de : global.css
+══════════════════════════════════════ */
+
+.ressource-name { font-weight: 600; }
+
+.date-cell {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
