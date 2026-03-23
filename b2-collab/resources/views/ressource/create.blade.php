@@ -47,7 +47,7 @@
 
                     <div class="form-group">
                         <label for="id_typeressource">Type de ressource</label>
-                        <select id="id_typeressource" name="id_typeressource" required>
+                        <select id="type_id" name="type_id" ...>
                             <option value="">— Sélectionner un type —</option>
                             @foreach($types as $type)
                                 <option value="{{ $type->id_typeressource }}"
@@ -63,7 +63,7 @@
 
                     <div class="form-group">
                         <label for="id_cat">Catégorie</label>
-                        <select id="id_cat" name="id_cat" required>
+                        <select id="category_id" name="category_id" ...>
                             <option value="">— Sélectionner une catégorie —</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id_cat }}"
