@@ -17,6 +17,7 @@ import {
   Category,
   createCategory,
   deleteCategory,
+  getCategoryId,
   getCategories,
   isUnauthorizedError,
   updateCategory,
@@ -63,7 +64,7 @@ export default function CategoriesScreen() {
     try {
       setSaving(true);
       if (editItem) {
-        await updateCategory(editItem.id, name);
+        await updateCategory(getCategoryId(editItem), name);
       } else {
         await createCategory(name);
       }
@@ -87,7 +88,7 @@ export default function CategoriesScreen() {
           style: "destructive",
           onPress: async () => {
             try {
-              await deleteCategory(item.id);
+              await deleteCategory(getCategoryId(item));
               await loadCategories();
             } catch (error) {
               Alert.alert("Erreur", (error as Error).message);
@@ -116,7 +117,7 @@ export default function CategoriesScreen() {
       ) : (
         <FlatList
           data={items}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(getCategoryId(item))}
           onRefresh={loadCategories}
           refreshing={loading}
           renderItem={({ item }) => (

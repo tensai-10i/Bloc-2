@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\TypeRessource;
+use App\Models\User;
 
 class Ressources extends Model
 {
@@ -11,7 +15,7 @@ class Ressources extends Model
 
     protected $table = 'resources';
     protected $primaryKey = 'id_ressource';
-    protected $fillable = ['name_ressource','description', 'type_id', 'category_id', 'user_id'];
+    protected $fillable = ['name_ressource', 'description', 'type_id', 'category_id', 'user_id'];
 
     public function typeRessource()
     {

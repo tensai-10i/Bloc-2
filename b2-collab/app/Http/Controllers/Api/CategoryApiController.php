@@ -9,18 +9,26 @@ use App\Http\Controllers\Controller;
 
 class CategoryApiController extends Controller
 {
+    private function transform(Category $category): array
+    {
+        return [
+            'id'       => $category->id_cat,
+            'name_cat' => $category->name_cat,
+        ];
+    }
+
     public function index(): JsonResponse
     {
         $categories = Category::all();
 
-        return response()->json($categories);
+        return response()->json($categories->map(fn($c) => $this->transform($c))->values());
     }
 
     public function show(int $id): JsonResponse
     {
         $category = Category::findOrFail($id);
 
-        return response()->json($category);
+        return response()->json($this->transform($category));
     }
 
     public function store(Request $request): JsonResponse
@@ -31,7 +39,7 @@ class CategoryApiController extends Controller
 
         $category = Category::create($validated);
 
-        return response()->json($category, 201);
+        return response()->json($this->transform($category), 201);
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -43,7 +51,7 @@ class CategoryApiController extends Controller
         $category = Category::findOrFail($id);
         $category->update($validated);
 
-        return response()->json($category);
+        return response()->json($this->transform($category));
     }
 
     public function destroy(int $id): JsonResponse
