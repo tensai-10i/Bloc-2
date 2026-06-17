@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - 'b2-collab/**'
-      - '.github/workflows/ci.yml'
+      - '.github/workflows/**'
   pull_request:
     paths:
       - 'b2-collab/**'
-      - '.github/workflows/ci.yml'
+      - '.github/workflows/**'
 
 defaults:
   run:
