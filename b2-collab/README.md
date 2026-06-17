@@ -1,59 +1,145 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# B2 Collab
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Application web collaborative construite avec Laravel 12, Tailwind CSS et Alpine.js.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Prérequis
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Docker](https://www.docker.com/) et Docker Compose v2
+- `make`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Aucune installation locale de PHP, Node.js ou MySQL n'est nécessaire.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Cloner le dépôt
 
-## Laravel Sponsors
+```bash
+git clone <url-du-repo>
+cd b2-collab
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 2. Configurer l'environnement
 
-### Premium Partners
+```bash
+cp .env.example .env
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Ouvrir `.env` et renseigner les variables suivantes :
 
-## Contributing
+```dotenv
+APP_URL=http://localhost:8000
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+DB_PASSWORD=un_mot_de_passe
+DB_ROOT_PASSWORD=un_mot_de_passe_root
+```
 
-## Code of Conduct
+Les autres valeurs sont pré-configurées pour Docker et fonctionnent sans modification.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Construire et démarrer les conteneurs
 
-## Security Vulnerabilities
+```bash
+make up-build
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Générer la clé applicative
 
-## License
+```bash
+make key
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 5. Accéder à l'application
+
+| Service | URL |
+|---------|-----|
+| Application | http://localhost:8000 |
+| Vite (hot reload) | http://localhost:5173 |
+
+Les migrations sont exécutées automatiquement au démarrage.
+
+---
+
+## Commandes quotidiennes
+
+```bash
+make up          # Démarrer les conteneurs
+make down        # Arrêter et supprimer les conteneurs
+make restart     # Redémarrer les conteneurs
+make ps          # Voir l'état des conteneurs
+```
+
+### Logs
+
+```bash
+make logs        # Tous les conteneurs
+make logs-app    # PHP-FPM (Laravel)
+make logs-nginx  # Nginx
+make logs-mysql  # MySQL
+make logs-queue  # Queue worker
+```
+
+### Consoles
+
+```bash
+make shell         # Bash dans le conteneur app
+make shell-mysql   # Console MySQL
+make tinker        # Laravel Tinker
+```
+
+### Laravel
+
+```bash
+make migrate                      # Lancer les migrations
+make migrate-fresh                # Recréer la base de données (+ seeders)
+make migrate-status               # Voir l'état des migrations
+make artisan CMD="route:list"     # Toute commande artisan
+make cache-clear                  # Vider les caches
+```
+
+---
+
+## Environnements
+
+### Préprod
+
+```bash
+# Copier et adapter le .env pour la préprod
+make preprod-up-build
+```
+
+### Production
+
+```bash
+# Copier et adapter le .env pour la prod
+make prod-up-build
+```
+
+| Environnement | Commande de démarrage | Port |
+|---|---|---|
+| Local | `make up-build` | 8000 |
+| Préprod | `make preprod-up-build` | 80 |
+| Production | `make prod-up-build` | 80 |
+
+---
+
+## Architecture Docker
+
+| Conteneur | Rôle |
+|-----------|------|
+| `app` | PHP 8.4-FPM — exécute Laravel |
+| `nginx` | Serveur web — reverse proxy vers app |
+| `mysql` | Base de données MySQL 8.0 |
+| `queue` | Worker de queue Laravel |
+| `vite` | Serveur de développement Vite (local uniquement) |
+
+---
+
+## Stack technique
+
+- **Backend** : Laravel 12, PHP 8.4
+- **Frontend** : Vite, Tailwind CSS, Alpine.js
+- **Base de données** : MySQL 8.0
+- **Authentification** : Laravel Sanctum + Breeze

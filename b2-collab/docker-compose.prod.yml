@@ -1,0 +1,52 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: b2-collab-app:latest
+    volumes:
+      - app_public:/var/www/public
+      - app_storage:/var/www/html/storage
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: error
+    env_file:
+      - .env
+    restart: always
+
+  nginx:
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - app_public:/var/www/html/public:ro
+    restart: always
+
+  mysql:
+    ports: []
+    restart: always
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: b2-collab-app:latest
+    command: ["php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--timeout=90", "--max-time=3600"]
+    volumes:
+      - app_storage:/var/www/html/storage
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: error
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  app_public:
+  app_storage:
