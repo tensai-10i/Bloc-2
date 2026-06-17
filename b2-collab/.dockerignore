@@ -1,0 +1,44 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Environment files — never bake into images
+.env
+.env.*
+!.env.example
+
+# Dependencies — reinstalled during build
+vendor/
+node_modules/
+
+# Built assets — rebuilt during Docker build
+public/build/
+public/hot/
+
+# Storage and logs — runtime data
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/app/public/*
+storage/*.key
+storage/pail/
+
+# Development tools and IDE
+.phpunit.cache/
+.phpunit.result.cache
+.junie/
+.editorconfig
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Docker files (not needed inside image)
+docker-compose*.yml
+.dockerignore
+
+# Tests
+tests/
+phpunit.xml
