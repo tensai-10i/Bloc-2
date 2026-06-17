@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - 'b2-collab/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    paths:
+      - 'b2-collab/**'
+      - '.github/workflows/ci.yml'
+
+defaults:
+  run:
+    working-directory: b2-collab
+
+jobs:
+  ci:
+    name: Tests & build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, xml, ctype, fileinfo, bcmath, zip, intl, pdo_sqlite
+          coverage: none
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+
+      - name: Run tests
+        run: php artisan test --compact
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: b2-collab/package-lock.json
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
