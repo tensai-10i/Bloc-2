@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       target: production
     image: b2-collab-app:preprod
-    volumes:
+    volumes: !override
       - app_public:/var/www/public
       - app_storage:/var/www/html/storage
     environment:
@@ -16,14 +16,17 @@ services:
       - .env
 
   nginx:
-    ports:
-      - "80:80"
-    volumes:
+    ports: !override
+      - "${APP_HTTP_PORT:-80}:80"
+    volumes: !override
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - app_public:/var/www/html/public:ro
 
   mysql:
-    ports: []
+    ports: !override []
+
+  vite:
+    profiles: ["dev"]
 
   queue:
     build:
@@ -32,7 +35,7 @@ services:
       target: production
     image: b2-collab-app:preprod
     command: ["php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--timeout=90"]
-    volumes:
+    volumes: !override
       - app_storage:/var/www/html/storage
     environment:
       APP_ENV: staging
