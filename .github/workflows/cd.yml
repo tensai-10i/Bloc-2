@@ -58,31 +58,17 @@ jobs:
   deploy:
     name: Deploy (${{ needs.resolve-environment.outputs.environment }})
     needs: resolve-environment
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, bloc2]
     environment: ${{ needs.resolve-environment.outputs.environment }}
     steps:
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
+      - name: Deploy
+        run: |
+          set -euo pipefail
 
-      - name: Deploy over SSH
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: 22
-          script_stop: true
-          script: |
-            set -euo pipefail
+          cd /home/sato/bloc2
+          git fetch origin "${{ needs.resolve-environment.outputs.git_ref }}:refs/remotes/origin/${{ needs.resolve-environment.outputs.git_ref }}"
+          git checkout -B "${{ needs.resolve-environment.outputs.git_ref }}" "origin/${{ needs.resolve-environment.outputs.git_ref }}"
 
-            cd "${{ secrets.DEPLOY_PATH }}"
-            git fetch origin "${{ needs.resolve-environment.outputs.git_ref }}:refs/remotes/origin/${{ needs.resolve-environment.outputs.git_ref }}"
-            git checkout -B "${{ needs.resolve-environment.outputs.git_ref }}" "origin/${{ needs.resolve-environment.outputs.git_ref }}"
-
-            cd b2-collab
-            docker compose -f docker-compose.yml -f "docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml" up -d --build
-            docker compose -f docker-compose.yml -f "docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml" ps
+          cd b2-collab
+          docker compose -f docker-compose.yml -f "docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml" up -d --build
+          docker compose -f docker-compose.yml -f "docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml" ps
