@@ -28,7 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.resolve.outputs.environment }}
-      compose_target: ${{ steps.resolve.outputs.compose_target }}
       compose_override: ${{ steps.resolve.outputs.compose_override }}
       git_ref: ${{ steps.resolve.outputs.git_ref }}
     steps:
@@ -46,13 +45,11 @@ jobs:
           case "$TARGET" in
             production)
               echo "environment=production" >> "$GITHUB_OUTPUT"
-              echo "compose_target=prod-up-build" >> "$GITHUB_OUTPUT"
               echo "compose_override=prod" >> "$GITHUB_OUTPUT"
               echo "git_ref=main" >> "$GITHUB_OUTPUT"
               ;;
             preprod)
               echo "environment=preprod" >> "$GITHUB_OUTPUT"
-              echo "compose_target=preprod-up-build" >> "$GITHUB_OUTPUT"
               echo "compose_override=preprod" >> "$GITHUB_OUTPUT"
               echo "git_ref=preprod" >> "$GITHUB_OUTPUT"
               ;;
@@ -83,11 +80,9 @@ jobs:
             set -euo pipefail
 
             cd "${{ secrets.DEPLOY_PATH }}"
-            git fetch origin
-            git checkout "${{ needs.resolve-environment.outputs.git_ref }}"
-            git pull origin "${{ needs.resolve-environment.outputs.git_ref }}"
+            git fetch origin "${{ needs.resolve-environment.outputs.git_ref }}:refs/remotes/origin/${{ needs.resolve-environment.outputs.git_ref }}"
+            git checkout -B "${{ needs.resolve-environment.outputs.git_ref }}" "origin/${{ needs.resolve-environment.outputs.git_ref }}"
 
             cd b2-collab
-            make ${{ needs.resolve-environment.outputs.compose_target }}
-
-            docker compose -f docker-compose.yml -f docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml ps
+            docker compose -f docker-compose.yml -f "docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml" up -d --build
+            docker compose -f docker-compose.yml -f "docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml" ps
