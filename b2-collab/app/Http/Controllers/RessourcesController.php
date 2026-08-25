@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ressources;
 use App\Models\Category;
-use App\Models\TypeRessource;
+use App\Models\Ressources;
 use Illuminate\Http\Request;
+use App\Models\TypeRessource;
 
 class RessourcesController extends Controller
 {
@@ -76,10 +76,10 @@ class RessourcesController extends Controller
         }
 
         $data = $request->validate([
-            'name_ressource'   => 'required|string|max:255',
-            'description'      => 'nullable|string',
-            'id_cat'           => 'nullable|exists:category,id_cat',
-            'id_typeressource' => 'nullable|exists:types_ressources,id_typeressource',
+            'name_ressource' => 'required|string|max:255',
+            'description'    => 'nullable|string',
+            'category_id'    => 'nullable|exists:category,id_cat',
+            'type_id'        => 'nullable|exists:types_ressources,id_typeressource',
         ]);
 
         $ressource->update($data);

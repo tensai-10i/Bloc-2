@@ -52,6 +52,11 @@ export function canWrite(): boolean {
   return ["super_admin", "superadmin", "admin", "moderateur", "moderator"].includes(role);
 }
 
+/** Tout utilisateur connecté avec un email vérifié peut ajouter une ressource. */
+export function canAddResource(): boolean {
+  return !!authToken && !!authUser && !!authUser.email_verified_at;
+}
+
 export function isAdminOrSuperAdmin(): boolean {
   const role = authUser?.role ?? "";
   return role === "admin" || role === "super_admin" || role === "superadmin";

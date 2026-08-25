@@ -16,12 +16,41 @@ export type RoleName = "user" | "moderateur" | "admin" | "super_admin";
 
 export type Category = {
   id: number;
+  id_cat?: number;
   name_cat: string;
 };
 
 export type ResourceItem = {
   id: number;
+  id_ressource?: number;
   name_ressource: string;
+  description?: string | null;
+  category_id?: number | null;
+  type_id?: number | null;
+  id_cat?: number | null;
+  id_typeressource?: number | null;
+};
+
+export type ResourcePayload = {
+  name_ressource: string;
+  description?: string;
+  category_id?: number;
+  type_id?: number;
+  id_cat?: number;
+  id_typeressource?: number;
+};
+
+export type ResourceType = {
+  id: number;
+  id_typeressource?: number;
+  name_typeressource: string;
+};
+
+export type Comment = {
+  id: number;
+  content: string;
+  user_name: string;
+  created_at: string;
 };
 
 type ModerateResponse = {
@@ -55,6 +84,44 @@ export class ApiError extends Error {
 
 export function isUnauthorizedError(error: unknown): error is ApiError {
   return error instanceof ApiError && error.status === 401;
+}
+
+export function getCategoryId(category: Partial<Category>): number {
+  return Number(category.id ?? category.id_cat ?? 0);
+}
+
+export function getResourceId(resource: Partial<ResourceItem>): number {
+  return Number(resource.id ?? resource.id_ressource ?? 0);
+}
+
+export function getResourceTypeId(type: Partial<ResourceType>): number {
+  return Number(type.id ?? type.id_typeressource ?? 0);
+}
+
+function normalizeCategory(raw: Category): Category {
+  const id = getCategoryId(raw);
+  return {
+    ...raw,
+    id,
+  };
+}
+
+function normalizeResource(raw: ResourceItem): ResourceItem {
+  const id = getResourceId(raw);
+  return {
+    ...raw,
+    id,
+    category_id: raw.category_id ?? raw.id_cat ?? null,
+    type_id: raw.type_id ?? raw.id_typeressource ?? null,
+  };
+}
+
+function normalizeResourceType(raw: ResourceType): ResourceType {
+  const id = getResourceTypeId(raw);
+  return {
+    ...raw,
+    id,
+  };
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -177,7 +244,8 @@ export async function logout(): Promise<void> {
 
 export async function getCategories(): Promise<Category[]> {
   const data = await request<Category[] | { data?: Category[] }>("/categories", { withAuth: false });
-  return Array.isArray(data) ? data : (data.data ?? []);
+  const list = Array.isArray(data) ? data : (data.data ?? []);
+  return list.map(normalizeCategory);
 }
 
 export async function getUsers(): Promise<User[]> {
@@ -199,11 +267,13 @@ export async function updateUserRole(userId: number, role: RoleName): Promise<Us
 }
 
 export async function createCategory(name_cat: string): Promise<Category> {
-  return request<Category>("/categories", { method: "POST", body: { name_cat } });
+  const data = await request<Category>("/categories", { method: "POST", body: { name_cat } });
+  return normalizeCategory(data);
 }
 
 export async function updateCategory(id: number, name_cat: string): Promise<Category> {
-  return request<Category>(`/categories/${id}`, { method: "PUT", body: { name_cat } });
+  const data = await request<Category>(`/categories/${id}`, { method: "PUT", body: { name_cat } });
+  return normalizeCategory(data);
 }
 
 export async function deleteCategory(id: number): Promise<void> {
@@ -212,15 +282,29 @@ export async function deleteCategory(id: number): Promise<void> {
 
 export async function getResources(): Promise<ResourceItem[]> {
   const data = await request<ResourceItem[] | { data?: ResourceItem[] }>("/ressources", { withAuth: false });
-  return Array.isArray(data) ? data : (data.data ?? []);
+  const list = Array.isArray(data) ? data : (data.data ?? []);
+  return list.map(normalizeResource);
 }
 
-export async function createResource(name_ressource: string): Promise<ResourceItem> {
-  return request<ResourceItem>("/ressources", { method: "POST", body: { name_ressource } });
+export async function getResourceById(id: number): Promise<ResourceItem> {
+  const data = await request<ResourceItem>(`/ressources/${id}`, { withAuth: false });
+  return normalizeResource(data);
 }
 
-export async function updateResource(id: number, name_ressource: string): Promise<ResourceItem> {
-  return request<ResourceItem>(`/ressources/${id}`, { method: "PUT", body: { name_ressource } });
+export async function getResourceTypes(): Promise<ResourceType[]> {
+  const data = await request<ResourceType[] | { data?: ResourceType[] }>("/types-ressources", { withAuth: false });
+  const list = Array.isArray(data) ? data : (data.data ?? []);
+  return list.map(normalizeResourceType);
+}
+
+export async function createResource(payload: ResourcePayload): Promise<ResourceItem> {
+  const data = await request<ResourceItem>("/ressources", { method: "POST", body: payload });
+  return normalizeResource(data);
+}
+
+export async function updateResource(id: number, payload: ResourcePayload): Promise<ResourceItem> {
+  const data = await request<ResourceItem>(`/ressources/${id}`, { method: "PUT", body: payload });
+  return normalizeResource(data);
 }
 
 export async function deleteResource(id: number): Promise<void> {
@@ -231,5 +315,17 @@ export async function moderateResource(id: number, action: "approve" | "reject")
   return request<ModerateResponse>(`/ressources/${id}/moderate`, {
     method: "POST",
     body: { action },
+  });
+}
+
+export async function getResourceComments(resourceId: number): Promise<Comment[]> {
+  const data = await request<Comment[]>(`/ressources/${resourceId}/comments`, { withAuth: false });
+  return Array.isArray(data) ? data : [];
+}
+
+export async function postComment(resourceId: number, content: string): Promise<Comment> {
+  return request<Comment>(`/ressources/${resourceId}/comments`, {
+    method: "POST",
+    body: { content },
   });
 }

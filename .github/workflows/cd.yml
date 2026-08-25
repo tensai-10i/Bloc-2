@@ -1,0 +1,74 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - preprod
+      - main
+    paths:
+      - 'b2-collab/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environnement cible
+        required: true
+        type: choice
+        options:
+          - preprod
+          - production
+
+concurrency:
+  group: cd-${{ github.event_name == 'workflow_dispatch' && inputs.environment || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  resolve-environment:
+    name: Resolve environment
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.resolve.outputs.environment }}
+      compose_override: ${{ steps.resolve.outputs.compose_override }}
+      git_ref: ${{ steps.resolve.outputs.git_ref }}
+    steps:
+      - name: Resolve target
+        id: resolve
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TARGET="${{ inputs.environment }}"
+          elif [ "${{ github.ref_name }}" = "main" ]; then
+            TARGET="production"
+          else
+            TARGET="preprod"
+          fi
+
+          case "$TARGET" in
+            production)
+              echo "environment=production" >> "$GITHUB_OUTPUT"
+              echo "compose_override=prod" >> "$GITHUB_OUTPUT"
+              echo "git_ref=main" >> "$GITHUB_OUTPUT"
+              ;;
+            preprod)
+              echo "environment=preprod" >> "$GITHUB_OUTPUT"
+              echo "compose_override=preprod" >> "$GITHUB_OUTPUT"
+              echo "git_ref=preprod" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+  deploy:
+    name: Deploy (${{ needs.resolve-environment.outputs.environment }})
+    needs: resolve-environment
+    runs-on: [self-hosted, bloc2]
+    environment: ${{ needs.resolve-environment.outputs.environment }}
+    steps:
+      - name: Deploy
+        run: |
+          set -euo pipefail
+
+          cd /home/sato/bloc2
+          git fetch origin "${{ needs.resolve-environment.outputs.git_ref }}:refs/remotes/origin/${{ needs.resolve-environment.outputs.git_ref }}"
+          git checkout -B "${{ needs.resolve-environment.outputs.git_ref }}" "origin/${{ needs.resolve-environment.outputs.git_ref }}"
+
+          cd b2-collab
+          docker compose -f docker-compose.yml -f "docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml" up -d --build
+          docker compose -f docker-compose.yml -f "docker-compose.${{ needs.resolve-environment.outputs.compose_override }}.yml" ps
